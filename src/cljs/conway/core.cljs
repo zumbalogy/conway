@@ -2,18 +2,15 @@
     (:require [reagent.core :as reagent :refer [atom]]
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
-              [accountant.core :as accountant]))
+              [accountant.core :as accountant]
+              [conway.framer :as framer :refer [frame]]
+              [conway.game :as game]))
 
 ;; -------------------------
 ;; Views
 
 (defn home-page []
-  [:div [:h2 "Welcome to conway"]
-   [:div [:a {:href "/about"} "go to about page"]]])
-
-(defn about-page []
-  [:div [:h2 "About conway"]
-   [:div [:a {:href "/"} "go to the home page"]]])
+  (frame))
 
 (defn current-page []
   [:div [(session/get :current-page)]])
@@ -23,9 +20,6 @@
 
 (secretary/defroute "/" []
   (session/put! :current-page #'home-page))
-
-(secretary/defroute "/about" []
-  (session/put! :current-page #'about-page))
 
 ;; -------------------------
 ;; Initialize app
@@ -42,4 +36,5 @@
      (fn [path]
        (secretary/locate-route path))})
   (accountant/dispatch-current!)
-  (mount-root))
+  (mount-root)
+  (framer/setup))
