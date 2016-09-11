@@ -3,8 +3,7 @@
               [reagent.session :as session]
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
-              [conway.framer :as framer :refer [frame]]
-              [conway.game :as game]))
+              [conway.framer :as framer :refer [frame]]))
 
 ;; -------------------------
 ;; Views
