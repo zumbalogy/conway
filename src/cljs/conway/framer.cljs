@@ -13,23 +13,25 @@
   (.-data (.getImageData ctx 0 0 w h))))
 
 (defn neighbors [data index width]
-  [(aget data (- index 4))
-   (aget data (+ index 4))
-   (aget data (+ index width))
-   (aget data (- index width))
-   (aget data (- index width 4))
-   (aget data (+ index width 4))
-  ;  (aget data (+ (- index width) 4))
-  ;  (aget data (- (+ index width) 4))
-   ])
+  (let [w4 (* 4 width)]
+    [(aget data (- index 4))
+     (aget data (+ index 4))
+     (aget data (+ index w4))
+     (aget data (- index w4))
+     (aget data (- index w4 4))
+     (aget data (+ index w4 4))
+     (aget data (+ (- index w4) 4))
+     (aget data (- (+ index w4) 4))
+     ]))
 
 (defn conway [data index w]
   (let [c (aget data index)
         neighbors (neighbors data index w)
-        amount (count (filter #(< 120 %) neighbors))]
-      (max 0 (cond
-        (= 3 amount) (+ (apply max neighbors) 10)
-        :else (- c 10)))))
+        amount (count (filter #(< 200 %) neighbors))]
+      (cond
+        true (rand-nth neighbors)
+        (< 0 amount 8) (+ (apply max neighbors) 10)
+        :else (- c 10))))
 
 (defn draw [data canvas]
   (let [h (.-height canvas)
@@ -37,7 +39,7 @@
         ctx (get-ctx canvas)
         img (.createImageData ctx w h)
         pixels (.-data img)]
-    (doseq [x (range 0 280000 4)]
+    (doseq [x (range (* 4 w) 280000 4)]
       (aset pixels x (conway data x w))
       (aset pixels (+ 1 x) (conway data (+ 1 x) w))
       (aset pixels (+ 2 x) (conway data (+ 2 x) w))
