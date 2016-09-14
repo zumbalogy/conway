@@ -21,8 +21,7 @@
      (aget data (- index w4 4))
      (aget data (+ index w4 4))
      (aget data (+ (- index w4) 4))
-     (aget data (- (+ index w4) 4))
-     ]))
+     (aget data (- (+ index w4) 4))]))
 
 (defn conway [data index w]
   (let [c (aget data index)
@@ -30,9 +29,7 @@
         amount (count (filter #(< 150 %) neighbors))]
       (cond
         (<= 2 amount 4) (+ (apply max neighbors) 10)
-        :true           (- (apply min neighbors) 10)
-        ; (<= 2 amount 4) (+ c 10)
-        :else (- c 10))))
+        :else           (- (apply min neighbors) 10))))
 
 (defn draw [data canvas]
   (let [h (.-height canvas)
