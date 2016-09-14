@@ -27,10 +27,11 @@
 (defn conway [data index w]
   (let [c (aget data index)
         neighbors (neighbors data index w)
-        amount (count (filter #(< 200 %) neighbors))]
+        amount (count (filter #(< 150 %) neighbors))]
       (cond
-        true (rand-nth neighbors)
-        (< 0 amount 8) (+ (apply max neighbors) 10)
+        (<= 2 amount 4) (+ (apply max neighbors) 10)
+        :true           (- (apply min neighbors) 10)
+        ; (<= 2 amount 4) (+ c 10)
         :else (- c 10))))
 
 (defn draw [data canvas]
