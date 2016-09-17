@@ -1,5 +1,7 @@
 body {
-  background-color: #444;
+  background-color: #000;
+  padding-bottom: 200px;
+  color: #fff;
 }
 .body-container {
   max-width: 600px;
@@ -7,4 +9,11 @@ body {
   padding-top: 72px;
   font-size: 1.125em;
   line-height: 1.5em
+}
+img {
+  margin-top: 50px;
+}
+p {
+  position: fixed;
+  bottom: 0;
 }

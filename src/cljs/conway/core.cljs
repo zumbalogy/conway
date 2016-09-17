@@ -4,6 +4,7 @@
               [secretary.core :as secretary :include-macros true]
               [accountant.core :as accountant]
               [conway.framer :as framer :refer [frame]]))
+              ; [gifshot-js]
 
 ;; -------------------------
 ;; Views

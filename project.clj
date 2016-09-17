@@ -47,10 +47,9 @@
   {:builds {:min
             {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
              :compiler
-            ;  {:foreign-libs [{:file "resources/public/javascript/gifjs/gif.js"
-            ;                   :provides ["gifjs"]}
-            ;                  {:file "resources/public/javascript/gifjs/gif.worker.js"
-            ;                   :provides ["gifworkerjs"]}]
+             {
+              :foreign-libs [{:file "resources/public/javascript/gifshot.js"
+                              :provides ["gifshot-js"]}]
               :output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/uberjar"
               :optimizations :advanced
@@ -60,10 +59,8 @@
              :compiler
              {:main "conway.dev"
               :asset-path "/js/out"
-              ; :foreign-libs [{:file "resources/public/javascript/gifjs/gif.js"
-              ;                 :provides ["gifjs"]}
-              ;                {:file "resources/public/javascript/gifjs/gif.worker.js"
-              ;                 :provides ["gifworkerjs"]}]
+              :foreign-libs [{:file "resources/public/javascript/gifshot.js"
+                              :provides ["gifshot-js"]}]
               :output-to "target/cljsbuild/public/js/app.js"
               :output-dir "target/cljsbuild/public/js/out"
               :source-map true

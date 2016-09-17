@@ -8,9 +8,9 @@
   [:div
    [:canvas#canvas {:width 300 :height 300}]
    [:br]
+   [:p (mod @image-index (count @images))]
    (if-let [img (get @images (mod @image-index (count @images)))]
-     [:img {:src (.-src img)}])
-   ])
+     [:img {:src (.-src img)}])])
 
 (defn get-ctx [canvas]
   (.getContext canvas "2d"))
@@ -22,13 +22,13 @@
   (.-data (.getImageData ctx 0 0 w h))))
 
 (defn neighbors [data index width]
-  (let [w4 (* 0.1 width)]
+  (let [w4 (* 4 width)]
     [(aget data (- index 4))
      (aget data (+ index 4))
      (aget data (+ index w4))
      (aget data (- index w4))
      (aget data (- index w4 4))
-     (aget data (+ index w4 5))
+     (aget data (+ index w4 4))
      (aget data (+ (- index w4) 4))
      (aget data (- (+ index w4) 4))]))
 
@@ -48,11 +48,13 @@
         img (.createImageData ctx w h)
         pixels (.-data img)]
     (doseq [x (range 0 (* w h 4) 4)]
-      (aset pixels x (conway data x w))
-      (aset pixels (+ 1 x) (conway data (+ 1 x) w))
-      (aset pixels (+ 2 x) (conway data (+ 2 x) w))
-      (aset pixels (+ 3 x) 255)
-      )
+      (let [r (conway data x w)
+            g (conway data (+ 1 x) w)
+            b (conway data (+ 2 x) w)]
+        (aset pixels x r)
+        (aset pixels (+ 1 x) g)
+        (aset pixels (+ 2 x) b)
+        (aset pixels (+ 3 x) 255)))
     (.putImageData ctx img 0 0)))
 
 (defn tick [canvas]
@@ -69,15 +71,16 @@
         img (js/Image.)
         interval (fn [] (do
           (tick canvas)
-          (swap! images conj (get-image canvas))
-          ))]
-    (set! (.-onload img) #(.drawImage ctx img 0 0))
+          (swap! images conj (get-image canvas))))
+        onload (fn [] (do
+          (.drawImage ctx img 0 0)
+          (reset! images [])
+          (swap! images conj (get-image canvas))))]
+    (set! (.-onload img) onload)
     (set! (.-src img) "/images/beta.jpg")
-    ; (js/setInterval interval 100)
-    (dotimes [n 30]
-      (js/setTimeout interval (* 110 n)))
-    (js/setInterval #(swap! image-index inc) 150)
-    ))
+    (dotimes [n 49]
+      (js/setTimeout interval (* 200 (inc n))))
+    (js/setInterval #(swap! image-index inc) 80)))
 
-    ; 150 zoom, lower right corner of monitor screen
-    ; byzanz-record --duration=5 --x=200 --y=974 --width=400 --height=450 out.gif
+    ; 150 zoom
+    ; byzanz-record --duration=3 --x=200 --y=974 --width=400 --height=450 out.gif
